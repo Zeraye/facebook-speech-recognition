@@ -4,17 +4,26 @@
   "version": "1.0",
 
   "description": "Change facebook voice messages to text messages.",
-
+  "homepage_url": "https://github.com/Zeraye/facebook-speech-recognition",
   "icons": {
     "512": "icons/icon-512.png"
   },
 
-  "permissions": ["https://www.facebook.com/", "storage"],
+  "permissions": ["storage", "<all_urls>"],
 
   "content_scripts": [
     {
       "matches": ["https://www.facebook.com/messages/t/*"],
       "js": ["scripts/updateMessages.js"]
     }
-  ]
+  ],
+
+  "browser_action": {
+    "default_icon": {
+      "16": "icons/icon-16.png",
+      "32": "icons/icon-32.png"
+    },
+    "default_title": "Choose language",
+    "default_popup": "popup/language.html"
+  }
 }
