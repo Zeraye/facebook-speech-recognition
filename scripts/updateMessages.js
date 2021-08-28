@@ -1,16 +1,24 @@
-const fetchSpeechToText = async (url) => {
-  // getting translated message from storage.local
-  /** @type {Record<string, string>} */
-  const savedUrls = await browser.storage.local.get();
-
-  if (savedUrls) {
-    const cachedMessage = savedUrls[url];
-    if (cachedMessage) {
-      return cachedMessage;
-    }
+/**
+ * A higher order function that provides caching in the browser's local storage.
+ *
+ * Only supports functions with a single argument that can be stored as an object's key
+ * (string, number, symbol, boolean).
+ */
+const withBrowserLocalCache = (fn) => (arg) => {
+  /** @type {Record<any, any>} */
+  const cache = (await browser.storage.local.get()) || {};
+  if (cache[arg]) {
+    return cache[arg];
   }
 
-  // fetching new data
+  const result = await fn(arg);
+  cache[arg] = result;
+  await browser.storage.local.set(cache);
+
+  return result;
+};
+
+const fetchSpeechToText = async (url) => {
   // TODO: fetch sererUrl from heroku server
   const serverUrl = "http://61e2-78-11-176-160.ngrok.io";
 
@@ -22,17 +30,10 @@ const fetchSpeechToText = async (url) => {
 
   const response = await fetch(serverUrl + "/speech-to-text", requestOptions);
 
-  const message = await response.text();
-
-  if (savedUrls) {
-    savedUrls[url] = message;
-    browser.storage.local.set(savedUrls);
-  } else {
-    browser.storage.local.set({ [url]: message });
-  }
-
-  return message;
+  return response.text();
 };
+
+const memoizedFetchSpeechToText = withBrowserLocalCache(fetchSpeechToText);
 
 // TODO: use `MutationObserver` instead of polling
 // See https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver
@@ -48,7 +49,7 @@ setInterval(() => {
     }
 
     const url = audioElement.getAttribute("src");
-    fetchSpeechToText(url).then((message) => {
+    memoizedFetchSpeechToText(url).then((message) => {
       element.innerHTML = createMessengerTextMessage(message);
     });
   }
