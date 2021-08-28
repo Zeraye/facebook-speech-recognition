@@ -1,0 +1,20 @@
+{
+  "manifest_version": 2,
+  "name": "Facebook speech recognition",
+  "version": "1.0",
+
+  "description": "Change facebook voice messages to text messages.",
+
+  "icons": {
+    "512": "icons/icon-512.png"
+  },
+
+  "permissions": ["https://www.facebook.com/", "storage"],
+
+  "content_scripts": [
+    {
+      "matches": ["https://www.facebook.com/messages/t/*"],
+      "js": ["scripts/updateMessages.js"]
+    }
+  ]
+}
