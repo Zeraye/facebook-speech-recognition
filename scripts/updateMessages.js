@@ -1,4 +1,38 @@
 /**
+ * Setting up custom style sheets.
+ */
+const addStyleSheets = (style) =>
+  (document.head.appendChild(document.createElement("style")).innerHTML =
+    style);
+
+const styleSheet = `
+  .fetched-fsr {
+    border-style: solid;
+    border-width: 3px;
+    border-color: #45BD62;
+    border-radius: 20px 20px 20px 20px;
+    display: inline;
+  }
+
+  .error-fsr {
+    border-style: solid;
+    border-width: 3px;
+    border-color: #F3425F;
+    border-radius: 20px 20px 20px 20px;
+    display: inline;
+  }
+
+  .repair-borders-fsr {
+    border-top-left-radius: 18px;
+    border-top-right-radius: 18px;
+    border-bottom-left-radius: 18px;
+    border-bottom-right-radius: 18px;
+  }
+`;
+
+addStyleSheets(styleSheet);
+
+/**
  * A higher order function that provides caching in the browser's local storage.
  *
  * Only supports functions with a single argument that can be stored as an object's key
@@ -42,13 +76,16 @@ setInterval(() => {
     if (!audioElement) {
       continue;
     }
-
+    element.querySelector(
+      '[data-testid="chat-audio-player"]'
+    ).children[0].children[1].children[1].children[0].innerHTML =
+      '<img src="https://raw.githubusercontent.com/gist/Zeraye/8cec76ffbb45ebbca0b8418a38500b35/raw/af4568561ffa822e2d59e79da60072aeb1815f07/loading.svg">';
     const url = audioElement.getAttribute("src");
     memoizedFetchSpeechToText(url).then((message) => {
       element.innerHTML = createMessengerTextMessage(message);
     });
   }
-}, 1000);
+}, 5000);
 
 /**
  * @param {string} text
@@ -61,6 +98,12 @@ const createMessengerTextMessage = (text) => {
     const elementIsNotAudio = element.querySelector("audio") === null;
     const elementIsNotImage = element.querySelector("img") === null;
     if (elementIsNotAudio && elementIsNotImage) {
+      element.children[0].children[0].children[0]
+        .querySelector('[role="none"]')
+        .classList.add("fetched-fsr");
+      element.children[0].children[0].children[0]
+        .querySelector('[role="none"]')
+        .children[1].classList.add("repair-borders-fsr");
       element.querySelector('[dir="auto"]').textContent = text;
       return element.innerHTML;
     }
