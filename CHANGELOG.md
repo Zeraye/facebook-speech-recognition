@@ -7,9 +7,9 @@
   - updates interval changed from `5000ms` to `1000ms`
   - button for returning to original voice message (only visually, button will be functional in the future)
 
-- Refractoring
+- Refactoring
 
-  - only needed cache is get from `browser.storage.local`
+  - only retrieve a single cache key from `browser.storage.local`
   - `elementIsNotAudio` and `elementIsNotImage` changed to `audioElement` and `imageElement` (better readability and consistency)
   - trimming permissions in `manifest.json`
   - support for `http`

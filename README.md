@@ -8,7 +8,7 @@ Extension is currently in build.
 
 ## Changelog
 
-You can see the most recent changes [here](https://github.com/Zeraye/facebook-speech-recognition/blob/main/CHANGELOG.md).
+You can see the most recent changes [here](CHANGELOG.md).
 
 ## Author
 
