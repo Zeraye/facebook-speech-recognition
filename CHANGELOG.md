@@ -10,7 +10,7 @@
 - Refactoring
 
   - only retrieve a single cache key from `browser.storage.local`
-  - `elementIsNotAudio` and `elementIsNotImage` changed to `audioElement` and `imageElement` (better readability and consistency)
+  - refactor variable names
   - trimming permissions in `manifest.json`
   - support for `http`
 
