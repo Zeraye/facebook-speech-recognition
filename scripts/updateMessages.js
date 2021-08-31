@@ -1,25 +1,27 @@
 /**
- * Setting up custom style sheets.
+ * @param {string} style
  */
 const addStyleSheets = (style) =>
   (document.head.appendChild(document.createElement("style")).innerHTML =
     style);
 
 const styleSheet = `
-  .fetched-fsr {
+  .recognized-message-fsr {
     border-style: solid;
     border-width: 3px;
     border-color: #45BD62;
     border-radius: 20px 20px 20px 20px;
     display: inline;
+    width: auto;
   }
 
-  .error-fsr {
+  .error-message-fsr {
     border-style: solid;
     border-width: 3px;
     border-color: #F3425F;
     border-radius: 20px 20px 20px 20px;
     display: inline;
+    width: auto;
   }
 
   .repair-borders-fsr {
@@ -28,7 +30,33 @@ const styleSheet = `
     border-bottom-left-radius: 18px;
     border-bottom-right-radius: 18px;
   }
-`;
+
+  .loading-circle-fsr {
+    animation-duration: 2s;
+    animation-fill-mode: both;
+    animation-iteration-count: infinite;
+    animation-timing-function: cubic-bezier(.33,0,.67,1);
+    transform-origin: 50% 50%;
+    animation-name: cdeelhz6-B;
+  }
+
+  .loading-svg-fsr {
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+    animation-timing-function: cubic-bezier(0,0,1,1);
+    animation-fill-mode: both;
+    animation-name: ffxpx7bd-B;
+  }
+
+  .reset-message-fsr {
+    align-items: end;
+  }
+
+  .reset-message-svg-fsr {
+    var(--placeholder-icon);
+    fill: #606060;
+  }
+  `;
 
 addStyleSheets(styleSheet);
 
@@ -40,12 +68,12 @@ addStyleSheets(styleSheet);
  */
 const withBrowserLocalCache = (fn) => async (arg) => {
   /** @type {Record<any, any>} */
-  const cache = (await browser.storage.local.get()) || {};
+  const cache = (await browser.storage.local.get(arg)) || {};
   if (cache[arg]) {
     return cache[arg];
   }
+
   const result = await fn(arg);
-  cache[arg] = result;
   await browser.storage.local.set({ [arg]: result });
 
   return result;
@@ -53,7 +81,8 @@ const withBrowserLocalCache = (fn) => async (arg) => {
 
 const fetchSpeechToText = async (url) => {
   // TODO: fetch sererUrl from heroku server
-  const serverUrl = "http://9234-78-11-176-160.ngrok.io";
+  // Only for development purposes
+  const serverUrl = "http://1c93-78-11-176-160.ngrok.io";
 
   const requestOptions = {
     method: "POST",
@@ -76,16 +105,23 @@ setInterval(() => {
     if (!audioElement) {
       continue;
     }
-    element.querySelector(
+
+    const playButton = element.querySelector(
       '[data-testid="chat-audio-player"]'
-    ).children[0].children[1].children[1].children[0].innerHTML =
-      '<img src="https://raw.githubusercontent.com/gist/Zeraye/8cec76ffbb45ebbca0b8418a38500b35/raw/af4568561ffa822e2d59e79da60072aeb1815f07/loading.svg">';
+    ).children[0].children[1].children[1].children[0];
+
+    const loadingAnimationSvg =
+      '<svg class="loading-svg-fsr" height="16" viewBox="0 0 16 16" width="16"><circle class="loading-circle-fsr" cx="8" cy="8" fill="none" r="7" stroke="var(--progress-ring-disabled-foreground)" stroke-dasharray="43.982297150257104" stroke-width="2"></circle></svg>';
+
+    playButton.innerHTML = loadingAnimationSvg;
+
     const url = audioElement.getAttribute("src");
+
     memoizedFetchSpeechToText(url).then((message) => {
       element.innerHTML = createMessengerTextMessage(message);
     });
   }
-}, 5000);
+}, 1000);
 
 /**
  * @param {string} text
@@ -95,18 +131,32 @@ const createMessengerTextMessage = (text) => {
   const list = document.querySelectorAll('[data-testid="message-container"]');
 
   for (let element of list) {
-    const elementIsNotAudio = element.querySelector("audio") === null;
-    const elementIsNotImage = element.querySelector("img") === null;
-    if (elementIsNotAudio && elementIsNotImage) {
-      element.children[0].children[0].children[0]
-        .querySelector('[role="none"]')
-        .classList.add("fetched-fsr");
-      element.children[0].children[0].children[0]
-        .querySelector('[role="none"]')
-        .children[1].classList.add("repair-borders-fsr");
-      element.querySelector('[dir="auto"]').textContent = text;
-      return element.innerHTML;
+    const audioElement = element.querySelector("audio");
+    const imageElement = element.querySelector("img");
+    if (audioElement || imageElement) {
+      continue;
     }
+
+    const resetButton = element.children[1].children[0];
+
+    const resetButtonSvg = `<svg width="22px" height="22px" viewBox="1 1 21 21"><g stroke-width="1" fill-rule="evenodd" class="reset-message-svg-fsr"><path d="M10.8932368,14.7625445 C10.8932368,15.535432 10.0849567,15.996442 9.48116675,15.5677995 L4.03193175,11.696707 C3.49257425,11.313742 3.49287675,10.4694645 4.03193175,10.0864995 L9.48116675,6.2157095 C10.0849567,5.7867645 10.8932368,6.248077 10.8932368,7.020662 L10.8938418,9.0755445 C15.2129368,9.0755445 18.1517243,11.027577 18.1523293,15.7226795 C18.1523293,16.0820495 17.9036743,16.3349395 17.5273643,16.3349395 C17.2487618,16.3349395 17.0164418,16.1746145 16.8527893,15.680027 C16.1588543,13.584307 14.1063918,12.7049395 10.8938418,12.7049395 L10.8932368,14.7625445 Z"></path></g></svg>`;
+
+    resetButton.classList.add("reset-message-fsr");
+
+    resetButton.innerHTML = resetButtonSvg;
+
+    const message =
+      element.children[0].children[0].children[0].querySelector(
+        '[role="none"]'
+      );
+
+    message.classList.add("recognized-message-fsr");
+
+    message.children[1].classList.add("repair-borders-fsr");
+
+    element.querySelector('[dir="auto"]').textContent = text;
+
+    return element.innerHTML;
   }
 
   // Prays didn't work

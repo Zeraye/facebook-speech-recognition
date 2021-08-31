@@ -9,11 +9,15 @@
     "512": "icons/icon-512.png"
   },
 
-  "permissions": ["storage", "<all_urls>"],
+  "permissions": [
+    "storage",
+    "*://www.facebook.com/messages/*",
+    "http://*.ngrok.io/*"
+  ],
 
   "content_scripts": [
     {
-      "matches": ["https://www.facebook.com/messages/t/*"],
+      "matches": ["*://www.facebook.com/messages/t/*"],
       "js": ["scripts/updateMessages.js"]
     }
   ],

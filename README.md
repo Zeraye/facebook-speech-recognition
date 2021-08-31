@@ -6,6 +6,10 @@ Change facebook voice messages to text messages.
 
 Extension is currently in build.
 
+## Changelog
+
+You can see the most recent changes [here](https://github.com/Zeraye/facebook-speech-recognition/blob/main/CHANGELOG.md).
+
 ## Author
 
 The author of this repository is [Jakub Rudnik](https://github.com/Zeraye).
