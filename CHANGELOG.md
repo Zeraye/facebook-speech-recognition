@@ -4,7 +4,6 @@
 
 - Added
 
-  - updates interval changed from `5000ms` to `1000ms`
   - button for returning to original voice message (only visually, button will be functional in the future)
 
 - Refactoring
@@ -13,6 +12,7 @@
   - refactor variable names
   - trimming permissions in `manifest.json`
   - support for `http`
+  - updates interval changed from `5000ms` to `1000ms`
 
 - Fixed
 
