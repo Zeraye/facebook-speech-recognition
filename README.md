@@ -1,6 +1,6 @@
-# Facebook speech recognition
+# Messenger transcription
 
-Change facebook voice messages to text messages.
+Transcribe messenger voice messages.
 
 ## Add-on
 

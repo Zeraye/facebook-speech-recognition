@@ -1,5 +1,27 @@
 # Changelog
 
+## v2.0.0 (2021-08-15)
+
+- Added
+
+  - turning on/off translation in `popup`
+  - handling different languages
+  - listening to original voice message in transcribed text message
+  - reporting problems with specific message
+
+- Refactoring
+
+  - `updateMessages.js` file renamed to `updateMessenger.js`
+  - all `popup` files renamed to `popup.*`
+  - slimed down `popup.css`
+  - changed project name to `Messenger transcription`
+  - getting rid of injection css
+  - removed `playButton` and `loadingAnimation`
+
+- Fixed
+
+  - `element` in `createMessengerTextMessage` function is now cloned (not working on original node)
+
 ## v1.1.0 (2021-08-31)
 
 - Added

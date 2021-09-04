@@ -9,11 +9,11 @@ body {
   color: white;
 }
 
-.title {
-  font-weight: 600;
-  font-size: 1rem;
+.info {
+  text-align: center;
+  font-size: 0.7rem;
 }
 
-.language {
-  font-size: 0.8rem;
+.dropdown-item.active {
+  background-color: red;
 }
