@@ -29,6 +29,8 @@ const fetchServerUrl = async () => {
  * @param {string} lang
  */
 const fetchSpeechToText = async (url, lang) => {
+	return "test";
+
   const serverUrl = await fetchServerUrl();
 
   const requestOptions = {
@@ -115,17 +117,18 @@ const updateMessenger = async () => {
 
         button.addEventListener("click", () => {
           if (button.textContent === "⏸ ") {
-            button.textContent = "⏵ ";
+            button.textContent = "▶️ ";
             audio.pause();
             return;
           }
-          button.textContent = "⏸ ";
+					
+          button.textContent = "⏸️ ";
           audio.play();
         });
 
         audio.addEventListener("ended", () => {
           time.textContent = timeConverter(parseInt(audio.duration));
-          button.textContent = "⏵ ";
+          button.textContent = "▶️ ";
         });
 
         audio.addEventListener("timeupdate", () => {
@@ -192,7 +195,7 @@ const createMessengerTextMessage = (text, url) => {
     audioParagraph.setAttribute("onselectstart", "return false");
     audioParagraph.style.cursor = "pointer";
     audioParagraph.style.display = "inline";
-    audioParagraph.textContent = "⏵ ";
+    audioParagraph.textContent = "▶️ ";
     const audioSpan = document.createElement("span");
     audioDiv.appendChild(audioAudio);
     audioDiv.appendChild(audioParagraph);

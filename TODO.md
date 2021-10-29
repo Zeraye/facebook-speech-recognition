@@ -1,0 +1,1 @@
+kolor tworzonej wiadomosci pobierany jest z pierwszej napotkanej wiadomosci tekstowej. jezeli ty wyslales ta wiadomosc, to sa kolory twojej wiadomosci. mozna to poprawic sprawdzajac background-color wiadomosci ktora usuwasz i tworzac nowa, wstawiasz ten background-color. to moze byc var(--cos), bo facebook i tak dobrze to zinterpretuje
