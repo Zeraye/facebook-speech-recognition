@@ -1,3 +1,5 @@
+# ADDON IS [NO LONGER MAINTAINED](https://blog.zeraye.dev/post/Why%20Meta%20is%20terrible%20company)
+
 # Facebook speech recognition
 
 Change facebook voice messages to text messages.
